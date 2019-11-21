@@ -1,5 +1,8 @@
 # Unpacking the transient event dynamics that underlie spontaneous changes and induced responses in electrophysiology
-Scripts for the analysis and tutorial in *Quinn et al (2019)*
+This repository contains the scripts and software to run the simulations and real data analysis published in:
+
+Andrew J. Quinn, Freek van Ede, Matthew J. Brookes, Simone G. Heideman, Magdalena Nowak, Zelekha A. Seedat, Diego Vidaurre, Catharina Zich, Anna C. Nobre, Mark W. Woolrich (2019) Unpacking Transient Event Dynamics in Electrophysiological Power Spectra. Brain Topography.
+[https://doi.org/10.1007/s10548-019-00745-5](https://doi.org/10.1007/s10548-019-00745-5)
 
 ## Requirements
 
@@ -27,4 +30,4 @@ The analysis requires the following software running on a Unix-Type operating sy
 
 ```hmm_3_embedded``` runs an time-delay embedded HMM on simulated data and creates figure 3
 
-```hmm_4_realdata_trialwise``` runs an time-delay embedded HMM and task-evoked analysis on source-space MEG data and creates figures 4,5 and 6
+```hmm_4_realdata_trialwise``` runs an time-delay embedded HMM and task-evoked analysis on source-space MEG data and creates figures 4, 5, 6 and 7
