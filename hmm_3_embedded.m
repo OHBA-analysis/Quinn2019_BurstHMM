@@ -12,7 +12,9 @@ config = hmm_0_initialise;
 
 %% Create simulated signal
 
-[data,x,time_vect,sample_rate]  = hmm_util_get_simulation;
+% the TDE-HMM will infer more parameters than the AE-HMM, so this example
+% uses a longer version of the simulation.
+[data,x,time_vect,sample_rate]  = hmm_util_get_simulation('long');
 
 %% Wavelet transform
 
@@ -27,7 +29,8 @@ config = hmm_0_initialise;
 % https://github.com/OHBA-analysis/HMM-MAR/wiki/User-Guide#estimation
 
 options = struct();
-options.initrep = 10; % Set to be large as this is a short simulation
+options.repetitions = 4;
+options.initrep = 5;
 options.K = 3;
 options.standardise = 0;
 options.verbose = 1;
@@ -35,21 +38,20 @@ options.Fs = sample_rate;
 options.useMEX = 1;
 options.zeromean = 0;
 options.dropstates = 1;
-options.DirichletDiag = 1e10; % set very large as we don't have much data
-
 options.order = 0;
 options.embeddedlags = -11:11;
 options.covtype = 'full';
 
+% The inference itself
 T = length(data);
-[hmm, Gamma_emb,~,vpath] = hmmmar(data',T,options);
+[hmm, Gamma_emb,~,vpath] = hmmmar(data,T,options);
 
 % correct Gamma time-course for lags in  model
 Gamma_emb = padGamma(Gamma_emb,T,options);
 options.win = 1024;
 
 % Compute post-hoc spectra for each state
-fit_emb = hmmspectramt(data',T,Gamma_emb,options);
+fit_emb = hmmspectramt(data,T,Gamma_emb,options);
 
 %% Create a summary figure
 
@@ -57,6 +59,7 @@ fit_emb = hmmspectramt(data',T,Gamma_emb,options);
 cols = [27,158,119;117,112,179;200,200,200] ./ 255;
 
 timelims = [7 13];
+time_inds = find((time_vect>timelims(1)) .* (time_vect<timelims(2)));
 time_vect2 = time_vect - timelims(1);
 font_size = 12;
 
@@ -73,7 +76,7 @@ text(timelims(1)-.54,-3.8,'Burst Type 1','FontSize',font_size,'FontWeight','bold
 text(timelims(1)-.54,-5.9,'Burst Type 2','FontSize',font_size,'FontWeight','bold')
 
 ax2 = axes('Position',[.075 .55 .825 .25]);
-contourf(time_vect,flipud(wf),flipud(abs(wt)),36,'linestyle','none')
+contourf(time_vect(time_inds),flipud(wf),flipud(abs(wt(:,time_inds))),36,'linestyle','none')
 xlim(timelims);
 cb = colorbar;
 cb.Position = cb.Position + 1e-10;
@@ -131,40 +134,37 @@ grid on
 xlim([0 75])
 
 ax = subplot(5,4,18);
-imagesc(hmm.state(1).W.S_W)
+imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(1).W.S_W))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
-set(ax,'XTick',[1,8,15],'XTickLabel',[-7 0 7])
-set(ax,'YTick',[1,8,15],'YTickLabel',[-7 0 7])
+set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])
 xlabel('Lag');ylabel('Lag')
 title({'State 1 Autocovariance'},'FontSize',font_size+2)
 ax.YAxis.FontSize = font_size;
 ax.XAxis.FontSize = font_size;
 
 ax = subplot(5,4,19);
-imagesc(hmm.state(2).W.S_W)
+imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(2).W.S_W))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
-set(ax,'XTick',[1,8,15],'XTickLabel',[-7 0 7])
-set(ax,'YTick',[1,8,15],'YTickLabel',[-7 0 7])
+set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])
 xlabel('Lag');ylabel('Lag')
 title({'State 2 Autocovariance'},'FontSize',font_size+2)
 ax.YAxis.FontSize = font_size;
 ax.XAxis.FontSize = font_size;
 
 ax = subplot(5,4,20);
-imagesc(hmm.state(3).W.S_W)
+imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(3).W.S_W))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
-set(ax,'XTick',[1,8,15],'XTickLabel',[-7 0 7])
-set(ax,'YTick',[1,8,15],'YTickLabel',[-7 0 7])
+set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])
 xlabel('Lag');ylabel('Lag');
 title({'State 3 Autocovariance'},'FontSize',font_size+2)
 ax.YAxis.FontSize = font_size;
 ax.XAxis.FontSize = font_size;
-
+axis square
 
 % save figure
-figpath = fullfile(config.figpath,'hmm_3_embedded_figure');
-saveas(gcf,figpath,'png') 
+figpath = fullfile(config.figpath,'hmm_fig3_embedded_simu');
+saveas(gcf,figpath,'png')
 saveas(gcf,figpath,'tiff')

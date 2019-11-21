@@ -23,16 +23,16 @@ amplitudes = [.5 1 2];
 for ii = 1:3
     x(:,ii,1) = base.*amplitudes(ii);
 end
-[freq_vect,PSD,ASD] = hmm_util_get_spectra(x(:,:,1),sample_rate);
+[~,PSD,ASD] = hmm_util_get_spectra(x(:,:,1),sample_rate);
 
 % Event Amplitude Increase
-durations = [500];
+durations = 500;
 amplitudes = [.5 1 2];
 for ii = 1:3
     inds = (1:durations(1)) + 1000-(durations(1)/2);
     x(inds,ii,2) = base(1:durations(1)).*amplitudes(ii);
 end
-[freq_vect,PSD2,ASD2] = hmm_util_get_spectra(x(:,:,2),sample_rate);
+[~,PSD2,ASD2] = hmm_util_get_spectra(x(:,:,2),sample_rate);
 
 % Event Duration Increase
 durations = [500 1000 1500];
@@ -40,7 +40,7 @@ for ii = 1:3
     inds = (1:durations(ii)) + 1000-(durations(ii)/2);
     x(inds,ii,3) = base(1:durations(ii));
 end
-[freq_vect,PSD3,ASD3] = hmm_util_get_spectra(x(:,:,3),sample_rate);
+[~,PSD3,ASD3] = hmm_util_get_spectra(x(:,:,3),sample_rate);
 
 % Number of Events Increase
 starts = [1 500 1000];
@@ -53,7 +53,7 @@ for ii = 1:3
     end
     if ii > 2
         x(1500:1500+499,ii,4) = base(1:500);
-    end        
+    end
 end
 [freq_vect,PSD4,ASD4] = hmm_util_get_spectra(x(:,:,4),sample_rate);
 
@@ -80,14 +80,14 @@ for ii = 1:3
         if ii == 1
             ylabel('Power fft(x)^2/N')
         end
-        
+
         if jj == 1
             ax.Position(2) = ax.Position(2)+.015;
         elseif jj == 4
             ax.Position(2) = ax.Position(2)-.015;
             xlabel('Frequency (Hz)')
         end
-        
+
         pos = ax.Position;
         ax2 = axes('Position',[pos(1) pos(2)+.1 pos(3) .075]);hold on
         plot( ones(2000,1),'Color',[.7 .7 .7])
@@ -99,8 +99,8 @@ for ii = 1:3
         set(ax2,'Visible',false)
         ax2.YAxis.Visible='on';
         ax2.YAxis.TickValues = [-1 0 1];
-        ax2.YAxis.FontSize=16;
-        
+        ax2.YAxis.FontSize=12;
+
         if jj == 1
             plot( 251:750,ones(500,1)*2,'k','linewidth',3)
             text( 500,2.5,'1 Second','HorizontalAlignment','center')
@@ -110,6 +110,6 @@ for ii = 1:3
 end
 
 % save figure
-figpath = fullfile(config.figpath,'hmm_1_dynamics_figure');
+figpath = fullfile(config.figpath,'hmm_fig1_dynamics_illustration');
 saveas(gcf,figpath,'png');
 saveas(gcf,figpath,'tiff');

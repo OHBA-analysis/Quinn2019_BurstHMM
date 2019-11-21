@@ -20,13 +20,13 @@ config = hmm_0_initialise;
 
 % The simulated data is first filtered to 20-30Hz and 20-45Hz
 [B,A] = butter( 5, [20 30]./(sample_rate/2));
-data(2,:) = filtfilt(B,A,data(1,:)')';
+data(:,2) = filtfilt(B,A,data(:,1))';
 
 [B,A] = butter( 5, [20 45]./(sample_rate/2));
-data(3,:) = filtfilt(B,A,data(1,:)')';
+data(:,3) = filtfilt(B,A,data(:,1))';
 
 % The amplitude envelope is computed using the hilbert transform
-envelopes = abs(hilbert(data')');
+envelopes = abs(hilbert(data)');
 
 % Here we generate an amplitude threshold using the Shin 2018 method
 threshold = 2*median(envelopes,2);
@@ -50,7 +50,7 @@ for ii = 2:3
     options.dropstates = 1;
     options.order = 0;
     options.DirichletDiag = 1e10; % set very large as we don't have much data
-    
+
     % HMM inference - we only store the Gamma time-course of posterior probabilities
     T = length(data);
     [hmm, Gamma_emb{ii},~,vpath] = hmmmar(envelopes(ii,:)',T,options);
@@ -69,7 +69,7 @@ font_size = 12;
 
 figure('Position',[100 100 1024 768])
 ax1 = axes('Position',[.075 .85 .725 .15],'Visible',false);hold on; grid on
-plot(time_vect,data(1,:).*2,'k')
+plot(time_vect,data(:,1).*2,'k')
 plot(time_vect,x(:,2)-4,'Color',[27,158,119]./255)
 plot(time_vect,x(:,3)-6,'Color',[ 117,112,179]./255)
 %legend({'Data','High Burst','Low Burst'})
@@ -87,7 +87,7 @@ titles = {'20-30Hz Amplitude Envelope',...
           '20-45Hz Amplitude Envelope'};
 
 for ii = 1:2
-    
+
     ax2 = axes('Position',[.075 ybase(ii) .725 .14]);hold on
     h = area(ax2,time_vect,Gamma_emb{ii+1});
     xlim(ax2,timelims);
@@ -100,7 +100,7 @@ for ii = 1:2
 
     ax3 = axes('Position',[.075 ybase(ii)+.225 .725 .1],'Visible',false);hold on
     ax3.YAxis.Visible = 'on';
-    plot(ax3,time_vect,data(ii+1,:),'k')
+    plot(ax3,time_vect,data(:,),'k')
     plot(ax3,time_vect,envelopes(ii+1,:),'r')
     xlim(ax3,timelims);
     plot(ax3,[time_vect(1) time_vect(end)],[threshold(ii+1) threshold(ii+1)],'b--')
@@ -125,7 +125,7 @@ for ii = 1:2
     plot([threshold(ii+1) threshold(ii+1)],yl,'b--')
     ylabel('Num Occurrences','FontSize',font_size)
 
-    
+
     ax7 = axes('Position',[.845 ybase(ii) .15 .125],'defaultAxesFontSize',font_size);hold on
     for jj = 1:2
         inds = Gamma_emb{ii+1}(:,jj) > threshold(ii+1);
@@ -144,10 +144,10 @@ for ii = 1:2
     end
     xlabel('Amplitude','FontSize',font_size)
     ylabel('Num Occurrences','FontSize',font_size)
-    
+
 end
 
 % save figure
-figpath = fullfile(config.figpath,'hmm_2_envelope_figure');
-saveas(gcf,figpath,'png') 
-saveas(gcf,figpath,'tiff') 
+figpath = fullfile(config.figpath,'hmm_fig2_envelope_simu');
+saveas(gcf,figpath,'png')
+saveas(gcf,figpath,'tiff')
