@@ -134,7 +134,8 @@ grid on
 xlim([0 75])
 
 ax = subplot(5,4,18);
-imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(1).W.S_W))
+[covmat,~] = getFuncConn(hmm,1,1);
+imagesc(options.embeddedlags,options.embeddedlags,flipud(covmat))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
 set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])
@@ -144,7 +145,8 @@ ax.YAxis.FontSize = font_size;
 ax.XAxis.FontSize = font_size;
 
 ax = subplot(5,4,19);
-imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(2).W.S_W))
+[covmat,~] = getFuncConn(hmm,2,1);
+imagesc(options.embeddedlags,options.embeddedlags,flipud(covmat))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
 set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])
@@ -154,7 +156,8 @@ ax.YAxis.FontSize = font_size;
 ax.XAxis.FontSize = font_size;
 
 ax = subplot(5,4,20);
-imagesc(options.embeddedlags,options.embeddedlags,flipud(hmm.state(3).W.S_W))
+[covmat,~] = getFuncConn(hmm,3,1);
+imagesc(options.embeddedlags,options.embeddedlags,flipud(covmat))
 ax.Position(2) = .075;
 ax.Position(4) = .2088;
 set(ax,'XTick',[-11  0 11],'XTickLabel',[-11  0 11],'YTick',[-11  0 11],'YTickLabel',[11  0 -11])

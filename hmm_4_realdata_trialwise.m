@@ -168,7 +168,11 @@ freq = (0:length(options.embeddedlags)-1).*(dsample_rate/length(options.embedded
 states = 1:6;
 obs_spec = zeros( length(options.embeddedlags),K);
 for ii = 1:K
-    obs_spec(:,ii) = abs(fft(hmm.state(ii).W.S_W((length(options.embeddedlags)+1)/2,:)));
+    % Extract lagged-covariance matrix and take Fourier transform for state
+    % spectrum.
+    [covmat,corrmat] = getFuncConn(hmm,ii,1);
+    tmp = covmat((length(options.embeddedlags)+1)/2,:);
+    obs_spec(:,ii) = abs(fft(tmp));
 end
 task_obs_spec = obs_spec(1:options.embeddedlags(end)+1,states)*squeeze(mean(gamma_evoked(:,:,states),2))';
 
