@@ -100,7 +100,7 @@ for ii = 1:2
 
     ax3 = axes('Position',[.075 ybase(ii)+.225 .725 .1],'Visible',false);hold on
     ax3.YAxis.Visible = 'on';
-    plot(ax3,time_vect,data(:,),'k')
+    plot(ax3,time_vect,data(:,ii),'k')
     plot(ax3,time_vect,envelopes(ii+1,:),'r')
     xlim(ax3,timelims);
     plot(ax3,[time_vect(1) time_vect(end)],[threshold(ii+1) threshold(ii+1)],'b--')
