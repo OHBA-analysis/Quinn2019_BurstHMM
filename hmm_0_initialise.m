@@ -3,13 +3,12 @@ function config = hmm_0_initialise
 %
 % The following toolboxes will be added to the path based on diretories defined in the top part of this script
 % - HMM-MAR
-% - SPM
 % - distributionPlot
 %
 % Checks will be run to make sure that
 % - matlab version is greater than 2018a (scripts may run on older versions but haven't been tested')
 % - the Signal Processing and Wavelet toolboxes are present
-% - HMM-MAR, spm and distributionPlot can all be found on the path
+% - HMM-MAR and distributionPlot can all be found on the path
 
 
 %% User specified paths
@@ -70,12 +69,6 @@ end
 if isempty( which('hmmmar') )
     warning('hmmmar toolbox is missing!');
     warning('This can be downloaded from: https://github.com/OHBA-analysis/HMM-MAR');
-    allclear = false;
-end
-
-if isempty( which('ROInets.remove_source_leakage') )
-    warning('ROInets is missing!');
-    warning('This can be downloaded from: ');
     allclear = false;
 end
 
