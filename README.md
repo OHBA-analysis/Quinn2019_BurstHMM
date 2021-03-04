@@ -10,15 +10,16 @@ The analysis requires the following software running on a Unix-Type operating sy
  - MatLab 2018a or greater (may run on earlier versions but not tested)
  - MatLab Signal Processing Toolbox
  - MatLab Wavelet Toolbox
- - distributionPlot
-	 -  [https://uk.mathworks.com/matlabcentral/fileexchange/23661-violin-plots-for-plotting-multiple-distributions-distributionplot-m](https://uk.mathworks.com/matlabcentral/fileexchange/23661-violin-plots-for-plotting-multiple-distributions-distributionplot-m)
+ - [HMM-MAR Toolbox](https://github.com/OHBA-analysis/HMM-MAR)
+ - [distributionPlot package](https://uk.mathworks.com/matlabcentral/fileexchange/23661-violin-plots-for-plotting-multiple-distributions-distributionplot-m)
 
   ## Getting started
  1. Download or clone this repository to your computer
- 2. Ensure that you have a recent MatLab and access to the Signal Processing Toolbox and Wavelet Toolbox
- 3. Edit the file paths in the top of ```hmm_0_initialise``` to point to the location of these toolboxes on your computer
- 4. run ```hmm_0_initialise``` in MatLab, if this returns without error then you are good to go. If you see warnings then some dependencies may be missing, follow the instructions in the warning message.
- 5. Work through the hmm tutorial scripts
+ 2. Ensure that you have a recent MatLab with access to the Signal Processing Toolbox and Wavelet Toolbox.
+ 3. Download HMM-MAR and distributionPlot.
+ 4. Edit the file paths in the top of ```hmm_0_initialise``` to point to the location of these toolboxes on your computer
+ 5. run ```hmm_0_initialise``` in MatLab, if this returns without error then you are good to go. If you see warnings then some dependencies may be missing, follow the instructions in the warning message.
+ 6. Work through the hmm tutorial scripts
 
 ## Contents
 
